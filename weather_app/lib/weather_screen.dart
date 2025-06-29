@@ -72,7 +72,13 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
           final data = snapshot.data!;
 
-          final mainTemp = data['list'][0]['main']['temp'];
+          final currentWeatherData = data['list'][0];
+
+          final currentTemp = currentWeatherData['main']['temp'];
+          final currentSky = currentWeatherData['weather'][0]['main'];
+          final currentPressure = currentWeatherData['main']['pressure'];
+          final currentWindSpeed = currentWeatherData['wind']['speed'];
+          final currentHumidity = currentWeatherData['main']['humidity'];
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
@@ -96,7 +102,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                           child: Column(
                             children: [
                               Text(
-                                '$mainTemp K',
+                                '$currentTemp K',
                                 style: TextStyle(
                                   fontSize: 32,
                                   fontWeight: FontWeight.bold,
@@ -105,11 +111,11 @@ class _WeatherScreenState extends State<WeatherScreen> {
 
                               SizedBox(height: 16),
 
-                              Icon(Icons.cloud, size: 64),
+                              Icon(currentSky == 'Clouds' ? Icons.cloud : currentSky == 'Rain' ? Icons.umbrella : Icons.sunny, size: 64),
 
                               SizedBox(height: 16),
 
-                              Text('Rain', style: TextStyle(fontSize: 18)),
+                              Text(currentSky, style: TextStyle(fontSize: 18)),
                             ],
                           ),
                         ),
@@ -121,7 +127,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 const SizedBox(height: 20),
 
                 Text(
-                  'Weather Forecast',
+                  'Hourly Forecast',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
                 ),
 
@@ -175,17 +181,17 @@ class _WeatherScreenState extends State<WeatherScreen> {
                     AdditionalInfoWidget(
                       icon: Icons.water_drop,
                       label: 'Humidity',
-                      value: '94',
+                      value: currentHumidity.toString(),
                     ),
                     AdditionalInfoWidget(
                       icon: Icons.air,
                       label: 'Wind Speed',
-                      value: '7.67',
+                      value: currentWindSpeed.toString(),
                     ),
                     AdditionalInfoWidget(
                       icon: Icons.speed,
                       label: 'Pressure',
-                      value: '1006',
+                      value: currentPressure.toString(),
                     ),
                   ],
                 ),
